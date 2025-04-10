@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleTodo, deleteTodo, selectFilteredTodos } from '../store/todosSlice';
+import { toggleTodo, deleteTodo, selectFilteredTodos } from '../../store/todosSlice';
 
 function TodoList() {
   const todos = useSelector(selectFilteredTodos);

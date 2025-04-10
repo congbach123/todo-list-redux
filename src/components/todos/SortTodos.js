@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSortOption } from '../store/todosSlice';
+import { setSortOption } from '../../store/todosSlice';
 
 const SortTodos = () => {
   const dispatch = useDispatch();

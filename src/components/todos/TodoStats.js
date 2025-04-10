@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectTodosCount, selectFilteredTodos } from '../store/todosSlice';
+import { selectTodosCount, selectFilteredTodos } from '../../store/todosSlice';
 
 const TodoStats = () => {
   const counts = useSelector(selectTodosCount);

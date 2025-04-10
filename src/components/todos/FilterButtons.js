@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearCompleted, setFilter, setSortBy, setSortDirection } from '../store/todosSlice';
+import { clearCompleted, setFilter } from '../../store/todosSlice';
 
 const FilterButtons = () => {
   const dispatch = useDispatch();

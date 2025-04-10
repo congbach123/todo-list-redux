@@ -1,27 +1,44 @@
 import React from 'react';
-import AddTodo from './components/AddTodo';
-import TodoList from './components/TodoList';
-import FilterButtons from './components/FilterButtons';
-import TodoStats from './components/TodoStats';
-import SearchTodo from './components/SearchTodo';
-import SortTodos from './components/SortTodos';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/layout/Header';
+import AuthLoadingScreen from './components/layout/AuthLoadingScreen';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import TodoPage from './pages/TodoPage';
 import './App.css';
 
 function App() {
   return (
-    <div className="todo-app">
-      <h1>Todo List</h1>
-      <div className="todo-controls">
-        <SearchTodo />
-        <SortTodos />
+    <Router>
+      <div className="app">
+        <Header />
+        <main className="main-content">
+          <Routes>
+            <Route
+              path="/"
+              element={<HomePage />}
+            />
+            <Route
+              path="/login"
+              element={<LoginPage />}
+            />
+            <Route
+              path="/register"
+              element={<RegisterPage />}
+            />
+
+            {/* wrap the todo page with loading for protection */}
+            <Route element={<AuthLoadingScreen />}>
+              <Route
+                path="/todos"
+                element={<TodoPage />}
+              />
+            </Route>
+          </Routes>
+        </main>
       </div>
-      <AddTodo />
-      <TodoList />
-      <div className="todo-footer">
-        <TodoStats />
-        <FilterButtons />
-      </div>
-    </div>
+    </Router>
   );
 }
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addTodo } from '../store/todosSlice';
+import { addTodo } from '../../store/todosSlice';
 
 const AddTodo = () => {
   const [title, setTitle] = useState('');
