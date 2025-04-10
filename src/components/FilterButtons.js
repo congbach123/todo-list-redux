@@ -1,6 +1,6 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { clearCompleted, setFilter } from "../features/todosSlice";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearCompleted, setFilter, setSortBy, setSortDirection } from '../store/todosSlice';
 
 const FilterButtons = () => {
   const dispatch = useDispatch();
@@ -8,27 +8,23 @@ const FilterButtons = () => {
   return (
     <div className="filter-buttons">
       <button
-        className={filter === "all" ? "active" : ""}
-        onClick={() => dispatch(setFilter("all"))}
-      >
+        className={filter === 'all' ? 'active' : ''}
+        onClick={() => dispatch(setFilter('all'))}>
         All
       </button>
       <button
-        className={filter === "active" ? "active" : ""}
-        onClick={() => dispatch(setFilter("active"))}
-      >
+        className={filter === 'active' ? 'active' : ''}
+        onClick={() => dispatch(setFilter('active'))}>
         Active
       </button>
       <button
-        className={filter === "completed" ? "active" : ""}
-        onClick={() => dispatch(setFilter("completed"))}
-      >
+        className={filter === 'completed' ? 'active' : ''}
+        onClick={() => dispatch(setFilter('completed'))}>
         Completed
       </button>
       <button
         className="clear-completed"
-        onClick={() => dispatch(clearCompleted())}
-      >
+        onClick={() => dispatch(clearCompleted())}>
         Clear Completed Todos
       </button>
     </div>
