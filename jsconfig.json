@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"],
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"],
+      "@store/*": ["store/*"],
+      "@layout/*": ["components/layout/*"],
+      "@auth/*": ["components/auth/*"],
+      "@todos/*": ["components/todos/*"]
+    }
+  },
+  "include": ["src", "vite.config.js"]
+}

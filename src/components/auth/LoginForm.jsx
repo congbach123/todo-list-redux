@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { login, clearError } from '../../store/authSlice';
+import { login, clearError } from '@store/authSlice';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');

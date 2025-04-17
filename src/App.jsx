@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/layout/Header';
-import AuthLoadingScreen from './components/layout/AuthLoadingScreen';
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import TodoPage from './pages/TodoPage';
-import './App.css';
+import Header from '@layout/Header';
+import AuthLoadingScreen from '@layout/AuthLoadingScreen';
+import HomePage from '@pages/HomePage';
+import LoginPage from '@pages/LoginPage';
+import RegisterPage from '@pages/RegisterPage';
+import TodoPage from '@pages/TodoPage';
+import '@/App.css';
 
 function App() {
   return (

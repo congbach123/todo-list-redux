@@ -57,10 +57,15 @@ export const selectFilteredTodos = (state) => {
   }
 
   // filter search
+  // if (searchText) {
+  //   const search = searchText.toLowerCase();
+  //   filteredItems = filteredItems.filter((todo) => todo.text.toLowerCase().includes(search));
+  // }
+
   if (searchText) {
     const search = searchText.toLowerCase();
-    filteredItems = filteredItems.filter((todo) => todo.text.toLowerCase().includes(search));
-  }
+    filteredItems = filteredItems.filter((todo) => todo.title.toLowerCase().includes(search) || (todo.text && todo.text.toLowerCase().includes(search)));
+  } // filter search with both title and text
 
   // sort
   switch (sortOption) {
