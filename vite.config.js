@@ -5,6 +5,7 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  base: '/todo-list-redux/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -13,6 +14,7 @@ export default defineConfig({
       '@store': path.resolve(__dirname, './src/store'),
       '@layout': path.resolve(__dirname, './src/components/layout'),
       '@auth': path.resolve(__dirname, './src/components/auth'),
+      '@homePage': path.resolve(__dirname, './src/components/homePage'),
       '@todos': path.resolve(__dirname, './src/components/todos'),
       '@tests': path.resolve(__dirname, './src/tests'),
     },

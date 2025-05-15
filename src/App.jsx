@@ -10,7 +10,7 @@ import '@/App.css';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/todo-list-redux">
       <div className="app">
         <Header />
         <main className="main-content">

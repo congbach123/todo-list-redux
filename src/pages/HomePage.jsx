@@ -1,39 +1,68 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import WeatherCard from '@homePage/WeatherCard';
+import QuoteCard from '@homePage/QuoteCard';
+import FinancialChartCard from '@homePage/FinancialChartCard';
 
 const HomePage = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 flex flex-col justify-center items-center p-4">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-xl overflow-hidden">
-        <div className="p-8">
-          <h1 className="text-4xl font-bold text-center text-indigo-600 mb-2">Welcome to Todoist</h1>
-          <p className="text-gray-600 text-center mb-8">Organize your tasks efficiently with our easy-to-use todo application.</p>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 p-4">
+      <div className="max-w-6xl mx-auto">
+        {/* Header Section */}
+        <div className="bg-white rounded-xl shadow-xl overflow-hidden mb-6">
+          <div className="p-8">
+            <h1 className="text-4xl font-bold text-center text-indigo-600 mb-2">Welcome to Todoist</h1>
+            <p className="text-gray-600 text-center mb-8">Organize your tasks efficiently with our easy-to-use todo application.</p>
 
-          <div className="mt-6">
-            {isAuthenticated ? (
-              <Link
-                to="/todos"
-                className="block w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-center rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
-                Go to My Todos
-              </Link>
-            ) : (
-              <>
+            <div className="mt-6 max-w-md mx-auto">
+              {isAuthenticated ? (
                 <Link
-                  to="/login"
-                  className="block w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-center rounded-lg transition duration-300 ease-in-out transform hover:scale-105 mb-4">
-                  Login
+                  to="/todos"
+                  className="block w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-center rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                  Go to My Todos
                 </Link>
-                <Link
-                  to="/register"
-                  className="block w-full py-3 px-4 border border-indigo-600 text-indigo-600 hover:bg-indigo-50 font-medium text-center rounded-lg transition duration-300 ease-in-out">
-                  Register
-                </Link>
-              </>
-            )}
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="block w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-center rounded-lg transition duration-300 ease-in-out transform hover:scale-105 mb-4">
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="block w-full py-3 px-4 border border-indigo-600 text-indigo-600 hover:bg-indigo-50 font-medium text-center rounded-lg transition duration-300 ease-in-out">
+                    Register
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
+        </div>
+
+        {/* Dashboard Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Weather Card */}
+          <div className="transform transition duration-300 hover:scale-105">
+            <WeatherCard />
+          </div>
+
+          {/* Daily Inspiration Card */}
+          <div className="transform transition duration-300 hover:scale-105">
+            <QuoteCard />
+          </div>
+
+          {/* Financial Chart Card */}
+          <div className="transform transition duration-300 hover:scale-105 md:col-span-2 lg:col-span-1">
+            <FinancialChartCard />
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-10 text-center text-gray-500 text-sm">
+          <p>© 2025 Todoist. All rights reserved.</p>
         </div>
       </div>
     </div>
