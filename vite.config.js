@@ -17,6 +17,7 @@ export default defineConfig({
       '@homePage': path.resolve(__dirname, './src/components/homePage'),
       '@todos': path.resolve(__dirname, './src/components/todos'),
       '@tests': path.resolve(__dirname, './src/tests'),
+      '@tasks': path.resolve(__dirname, './src/components/tasks'),
     },
   },
   esbuild: {

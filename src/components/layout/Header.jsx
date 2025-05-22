@@ -20,7 +20,7 @@ const Header = () => {
           <Link
             to="/"
             className="hover:text-indigo-800 transition duration-300">
-            Baccon's Todoist
+            Baccon's TaskBoard
           </Link>
         </div>
 
@@ -37,6 +37,11 @@ const Header = () => {
                 to="/todos"
                 className="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
                 Todos
+              </Link>
+              <Link
+                to="/projects"
+                className="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
+                Projects
               </Link>
               <div className="flex items-center space-x-4">
                 <span className="text-gray-700 font-medium">{user?.name || user?.username}</span>

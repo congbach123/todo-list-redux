@@ -6,6 +6,7 @@ import HomePage from '@pages/HomePage';
 import LoginPage from '@pages/LoginPage';
 import RegisterPage from '@pages/RegisterPage';
 import TodoPage from '@pages/TodoPage';
+import ProjectsPage from '@pages/ProjectsPage';
 import '@/App.css';
 
 function App() {
@@ -28,11 +29,15 @@ function App() {
               element={<RegisterPage />}
             />
 
-            {/* wrap the todo page with loading for protection */}
+            {/* Protected routes */}
             <Route element={<AuthLoadingScreen />}>
               <Route
                 path="/todos"
                 element={<TodoPage />}
+              />
+              <Route
+                path="/projects"
+                element={<ProjectsPage />}
               />
             </Route>
           </Routes>
