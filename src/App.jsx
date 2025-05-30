@@ -7,6 +7,7 @@ import LoginPage from '@pages/LoginPage';
 import RegisterPage from '@pages/RegisterPage';
 import TodoPage from '@pages/TodoPage';
 import ProjectsPage from '@pages/ProjectsPage';
+import TaskBoardPage from '@pages/TaskBoardPage';
 import '@/App.css';
 
 function App() {
@@ -38,6 +39,10 @@ function App() {
               <Route
                 path="/projects"
                 element={<ProjectsPage />}
+              />
+              <Route
+                path="/taskboard"
+                element={<TaskBoardPage />}
               />
             </Route>
           </Routes>

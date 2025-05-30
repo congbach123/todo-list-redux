@@ -43,6 +43,11 @@ const Header = () => {
                 className="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
                 Projects
               </Link>
+              <Link
+                to="/taskboard"
+                className="text-gray-700 hover:text-indigo-600 font-medium transition duration-300">
+                TaskBoard
+              </Link>
               <div className="flex items-center space-x-4">
                 <span className="text-gray-700 font-medium">{user?.name || user?.username}</span>
                 <button
