@@ -70,7 +70,7 @@ const HomePage = () => {
           </div>
 
           {/* Financial Chart Card */}
-          <div className="transform transition duration-300 hover:scale-105 md:col-span-2 lg:col-span-1">
+          <div className="transform transition duration-300 hover:scale-105">
             <FinancialChartCard />
           </div>
         </div>

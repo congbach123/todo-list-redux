@@ -46,19 +46,29 @@ const WeatherCard = () => {
     setCity(e.target.value);
   };
 
-  if (loading) return <div className="animate-pulse p-4">Loading weather data...</div>;
-
-  if (error)
+  if (loading) {
     return (
-      <div className="bg-red-50 p-4 rounded-lg">
-        <p className="text-red-500">{error}</p>
+      <div className="h-96 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
+        <div className="animate-pulse text-white">Loading weather data...</div>
       </div>
     );
+  }
+
+  if (error) {
+    return (
+      <div className="h-96 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
+        <div className="text-white text-center p-4">
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-gradient-to-r from-blue-400 to-indigo-500 rounded-xl shadow-lg overflow-hidden">
-      <div className="p-5 text-white">
-        <div className="flex justify-between items-center mb-4">
+    <div className="h-96 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-xl shadow-lg overflow-hidden flex flex-col">
+      <div className="p-5 text-white flex-1 flex flex-col">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Weather</h2>
           <select
             value={city}
@@ -92,25 +102,36 @@ const WeatherCard = () => {
           </select>
         </div>
 
+        {/* Main Content */}
         {weather && (
-          <>
-            <div className="flex justify-between items-center">
+          <div className="flex-1 flex flex-col justify-center">
+            <div className="flex justify-between items-center mb-6">
               <div>
-                <h3 className="text-3xl font-bold">{Math.round(weather.main.temp)}°C</h3>
-                <p className="capitalize">{weather.weather[0].description}</p>
-                <p className="text-sm mt-1">Feels like: {Math.round(weather.main.feels_like)}°C</p>
+                <h3 className="text-4xl font-bold mb-2">{Math.round(weather.main.temp)}°C</h3>
+                <p className="capitalize text-lg mb-1">{weather.weather[0].description}</p>
+                <p className="text-sm opacity-90">Feels like: {Math.round(weather.main.feels_like)}°C</p>
               </div>
-              <div className="text-right">
+              <div className="text-center">
                 <img
                   src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
                   alt={weather.weather[0].description}
-                  className="w-16 h-16"
+                  className="w-20 h-20 mx-auto"
                 />
-                <p className="text-sm">Humidity: {weather.main.humidity}%</p>
-                <p className="text-sm">Wind: {weather.wind.speed} m/s</p>
               </div>
             </div>
-          </>
+
+            {/* Additional Info */}
+            <div className="grid grid-cols-2 gap-4 mt-auto">
+              <div className="bg-white bg-opacity-20 rounded-lg p-3 text-center">
+                <p className="text-sm opacity-80">Humidity</p>
+                <p className="text-lg font-semibold">{weather.main.humidity}%</p>
+              </div>
+              <div className="bg-white bg-opacity-20 rounded-lg p-3 text-center">
+                <p className="text-sm opacity-80">Wind Speed</p>
+                <p className="text-lg font-semibold">{weather.wind.speed} m/s</p>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>

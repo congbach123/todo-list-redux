@@ -49,48 +49,63 @@ const QuoteCard = () => {
   }, []);
 
   if (loading && !quote && !music) {
-    return <div className="animate-pulse p-4">Loading daily inspiration...</div>;
+    return (
+      <div className="h-96 bg-gradient-to-r from-purple-400 to-pink-500 rounded-xl shadow-lg overflow-hidden flex items-center justify-center">
+        <div className="animate-pulse text-white">Loading daily inspiration...</div>
+      </div>
+    );
   }
 
   return (
-    <div className="bg-gradient-to-r from-purple-400 to-pink-500 rounded-xl shadow-lg overflow-hidden">
-      <div className="p-5 text-white">
+    <div className="h-96 bg-gradient-to-r from-purple-400 to-pink-500 rounded-xl shadow-lg overflow-hidden flex flex-col">
+      <div className="p-5 text-white flex-1 flex flex-col">
+        {/* Header */}
         <h2 className="text-2xl font-bold mb-4">Daily Inspiration</h2>
 
         {/* Quote Section */}
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">Today's Quote</h3>
+        <h3 className="text-lg font-semibold mb-2">Today's Quote</h3>
+        <div className="flex-1 mb-2">
           {quote ? (
-            <div className="bg-white bg-opacity-20 rounded-lg p-3">
-              <p className="italic">"{quote.quote}"</p>
-              <p className="text-right mt-1 text-sm">— {quote.author}</p>
+            <div className="bg-white bg-opacity-20 rounded-lg p-4 h-full flex flex-col justify-center">
+              <p className="italic text-sm leading-relaxed mb-3 line-clamp-4">"{quote.quote.length > 120 ? quote.quote.substring(0, 120) + '...' : quote.quote}"</p>
+              <p className="text-right text-xs opacity-90">— {quote.author}</p>
             </div>
           ) : error ? (
-            <p className="text-red-200">{error}</p>
+            <div className="bg-white bg-opacity-20 rounded-lg p-4 h-full flex items-center justify-center">
+              <p className="text-red-200 text-sm">{error}</p>
+            </div>
           ) : (
-            <div className="animate-pulse h-20 bg-white bg-opacity-10 rounded"></div>
+            <div className="animate-pulse h-full bg-white bg-opacity-10 rounded-lg"></div>
           )}
         </div>
 
         {/* Music Section */}
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Today's Track</h3>
+        <h3 className="text-lg font-semibold mb-2">Today's Track</h3>
+        <div className="flex-1">
           {music ? (
-            <div className="bg-white bg-opacity-20 rounded-lg p-3 flex items-center">
-              <div className="mr-3">
+            <div className="bg-white bg-opacity-20 rounded-lg p-4 h-full flex items-center">
+              <div className="mr-3 flex-shrink-0">
                 <img
                   src={music.image && music.image.length > 0 ? music.image[1]['#text'] : 'https://cdn-icons-png.flaticon.com/512/3659/3659784.png'}
                   alt="Album art"
-                  className="w-12 h-12 rounded"
+                  className="w-12 h-12 rounded object-cover"
                 />
               </div>
-              <div>
-                <p className="font-medium">{music.name}</p>
-                <p className="text-sm">{music.artist ? music.artist.name : 'Unknown Artist'}</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm truncate">{music.name.length > 25 ? music.name.substring(0, 25) + '...' : music.name}</p>
+                <p className="text-xs opacity-90 truncate">{music.artist ? music.artist.name : 'Unknown Artist'}</p>
+                <div className="mt-2 flex items-center">
+                  <div className="flex space-x-1">
+                    <div className="w-1 h-1 bg-white rounded-full animate-pulse"></div>
+                    <div className="w-1 h-1 bg-white rounded-full animate-pulse delay-75"></div>
+                    <div className="w-1 h-1 bg-white rounded-full animate-pulse delay-150"></div>
+                  </div>
+                  <span className="ml-2 text-xs opacity-75">Now Playing</span>
+                </div>
               </div>
             </div>
           ) : (
-            <div className="animate-pulse h-20 bg-white bg-opacity-10 rounded"></div>
+            <div className="animate-pulse h-full bg-white bg-opacity-10 rounded-lg"></div>
           )}
         </div>
       </div>
