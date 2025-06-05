@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Modal } from 'antd'; // Add this import
 import { updateTask, deleteTask, selectUsers } from '@store/projectsSlice';
 import TaskDetailModal from './TaskDetailModal';
-import DeleteConfirmationModal from './DeleteConfirmationModal';
+import UserAssignmentModal from './UserAssignmentModal'; // Add this import
+// Remove the DeleteConfirmationModal import
 
 const TaskTable = ({ tasks, status, statusLabel, statusIcon }) => {
   const dispatch = useDispatch();
@@ -12,6 +14,8 @@ const TaskTable = ({ tasks, status, statusLabel, statusIcon }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [openDropdownId, setOpenDropdownId] = useState(null);
+  const [showAssignmentModal, setShowAssignmentModal] = useState(false);
+  const [taskForAssignment, setTaskForAssignment] = useState(null);
 
   const getUsersByIds = (userIds) => {
     if (!userIds || userIds.length === 0) return [];
@@ -71,6 +75,29 @@ const TaskTable = ({ tasks, status, statusLabel, statusIcon }) => {
       setShowDeleteModal(false);
       setTaskToDelete(null);
     }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setTaskToDelete(null);
+  };
+
+  const handleAssignUsers = (task) => {
+    setTaskForAssignment(task);
+    setShowAssignmentModal(true);
+  };
+
+  const handleAssignmentSave = (selectedUserIds) => {
+    if (taskForAssignment) {
+      dispatch(
+        updateTask({
+          id: taskForAssignment.id,
+          assigneeIds: selectedUserIds,
+        })
+      );
+    }
+    setShowAssignmentModal(false);
+    setTaskForAssignment(null);
   };
 
   const handleDuplicateTask = (task) => {
@@ -159,20 +186,44 @@ const TaskTable = ({ tasks, status, statusLabel, statusIcon }) => {
                                   src={user.avatar}
                                   alt={user.name}
                                   className="w-8 h-8 rounded-full border-2 border-white"
-                                  title={user.name}
+                                  title={`${user.name} - ${user.email}`}
                                 />
                               ))}
                               {assignedUsers.length > 2 && (
-                                <div className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center">
+                                <div
+                                  className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center"
+                                  title={`${assignedUsers.length - 2} more assignees: ${assignedUsers
+                                    .slice(2)
+                                    .map((u) => u.name)
+                                    .join(', ')}`}>
                                   <span className="text-xs font-medium text-gray-600">+{assignedUsers.length - 2}</span>
                                 </div>
                               )}
+                              {/* Add Users Button - Only shown when there are existing assignees */}
+                              <button
+                                onClick={() => handleAssignUsers(task)}
+                                className="w-8 h-8 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center hover:bg-indigo-200 transition-colors"
+                                title="Add or modify assignees">
+                                <svg
+                                  className="w-4 h-4 text-indigo-600"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24">
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M12 4v16m8-8H4"
+                                  />
+                                </svg>
+                              </button>
                             </div>
                           </div>
                         ) : (
                           <button
-                            onClick={() => handleEditTask(task)}
-                            className="text-sm text-gray-400 hover:text-indigo-600">
+                            onClick={() => handleAssignUsers(task)}
+                            className="text-sm text-gray-400 hover:text-indigo-600 transition-colors"
+                            title="Assign users to this task">
                             Assign
                           </button>
                         )}
@@ -373,15 +424,34 @@ const TaskTable = ({ tasks, status, statusLabel, statusIcon }) => {
         }}
       />
 
-      {/* Delete Confirmation Modal */}
-      <DeleteConfirmationModal
-        isOpen={showDeleteModal}
-        onClose={() => {
-          setShowDeleteModal(false);
-          setTaskToDelete(null);
+      {/* Ant Design Delete Confirmation Modal */}
+      <Modal
+        title="Delete Task"
+        open={showDeleteModal}
+        onOk={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        okText="Delete"
+        cancelText="Cancel"
+        okButtonProps={{
+          danger: true,
         }}
-        onConfirm={handleDeleteConfirm}
-        taskTitle={taskToDelete?.title}
+        centered>
+        <p>
+          Are you sure you want to delete the task <strong>"{taskToDelete?.title}"</strong>?
+        </p>
+        <p className="text-gray-500 mt-2">This action cannot be undone.</p>
+      </Modal>
+
+      {/* User Assignment Modal */}
+      <UserAssignmentModal
+        isOpen={showAssignmentModal}
+        onClose={() => {
+          setShowAssignmentModal(false);
+          setTaskForAssignment(null);
+        }}
+        users={users}
+        selectedUserIds={taskForAssignment?.assigneeIds || []}
+        onSave={handleAssignmentSave}
       />
     </>
   );

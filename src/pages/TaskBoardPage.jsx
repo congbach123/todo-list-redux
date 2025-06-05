@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectCurrentProject, selectTasksByStatus } from '@store/projectsSlice';
+import { selectCurrentProject, selectTasksByStatus, selectUsers } from '@store/projectsSlice';
 import TaskBoardLayout from '@components/projects/TaskBoardLayout';
 import TaskBoardHeader from '@components/projects/TaskBoardHeader';
 import TaskBoardFilters from '@components/projects/TaskBoardFilters';
 import TaskTable from '@components/projects/TaskTable';
+import TaskBoard from '@components/projects/TaskBoard'; // Add this import
 import TaskBoardAddTask from '@components/projects/TaskBoardAddTask';
 
 const TaskBoardPage = () => {
   const currentProject = useSelector(selectCurrentProject);
   const tasksByStatus = useSelector(selectTasksByStatus);
+  const users = useSelector(selectUsers); // Add this line
   const [activeView, setActiveView] = useState('list');
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
+  const [preSelectedStatus, setPreSelectedStatus] = useState(null); // Add this state
 
-  const handleAddTask = () => {
+  const handleAddTask = (status = null) => {
+    setPreSelectedStatus(status);
     setShowAddTaskModal(true);
+  };
+
+  const handleCloseAddTask = () => {
+    setShowAddTaskModal(false);
+    setPreSelectedStatus(null);
   };
 
   if (!currentProject) {
@@ -79,12 +88,25 @@ const TaskBoardPage = () => {
 
       case 'board':
         return (
-          <div className="p-6">
-            <div className="text-center py-12">
-              <div className="text-6xl text-gray-300 mb-4">📊</div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Board View</h3>
-              <p className="text-gray-600">Coming soon...</p>
-            </div>
+          <div className="p-6 h-full">
+            {tasksByStatus.pending.length === 0 && tasksByStatus.inProgress.length === 0 && tasksByStatus.completed.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="text-6xl text-gray-300 mb-4">📝</div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No tasks yet</h3>
+                <p className="text-gray-600 mb-4">Create your first task to get started</p>
+                <button
+                  onClick={handleAddTask}
+                  className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+                  Add Task
+                </button>
+              </div>
+            ) : (
+              <TaskBoard
+                tasksByStatus={tasksByStatus}
+                users={users}
+                onAddTask={handleAddTask}
+              />
+            )}
           </div>
         );
 
@@ -142,7 +164,8 @@ const TaskBoardPage = () => {
         {showAddTaskModal && (
           <TaskBoardAddTask
             isOpen={showAddTaskModal}
-            onClose={() => setShowAddTaskModal(false)}
+            onClose={handleCloseAddTask}
+            preSelectedStatus={preSelectedStatus} // Pass the pre-selected status
           />
         )}
       </div>

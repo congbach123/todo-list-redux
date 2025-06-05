@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTask, selectUsers } from '@store/projectsSlice';
 import UserAssignmentModal from '@components/projects/UserAssignmentModal';
 
-const TaskBoardAddTask = ({ isOpen, onClose }) => {
+const TaskBoardAddTask = ({ isOpen, onClose, preSelectedStatus }) => {
   const dispatch = useDispatch();
   const users = useSelector(selectUsers);
   const [showAssignmentModal, setShowAssignmentModal] = useState(false);
@@ -13,7 +13,18 @@ const TaskBoardAddTask = ({ isOpen, onClose }) => {
     priority: 'normal',
     dueDate: '',
     assigneeIds: [],
+    status: 'pending', // Add status field
   });
+
+  // Set the pre-selected status when component mounts or preSelectedStatus changes
+  useEffect(() => {
+    if (preSelectedStatus) {
+      setFormData((prev) => ({
+        ...prev,
+        status: preSelectedStatus,
+      }));
+    }
+  }, [preSelectedStatus]);
 
   // Reset form when modal closes
   useEffect(() => {
@@ -24,9 +35,10 @@ const TaskBoardAddTask = ({ isOpen, onClose }) => {
         priority: 'normal',
         dueDate: '',
         assigneeIds: [],
+        status: preSelectedStatus || 'pending', // Use preSelectedStatus or default to pending
       });
     }
-  }, [isOpen]);
+  }, [isOpen, preSelectedStatus]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,6 +60,7 @@ const TaskBoardAddTask = ({ isOpen, onClose }) => {
         priority: formData.priority,
         dueDate: formData.dueDate || null,
         assigneeIds: formData.assigneeIds,
+        status: formData.status, // Include status in the task creation
       })
     );
 
@@ -67,6 +80,19 @@ const TaskBoardAddTask = ({ isOpen, onClose }) => {
     return users.filter((user) => userIds.includes(user.id));
   };
 
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 'pending':
+        return 'Pending';
+      case 'in-progress':
+        return 'In Progress';
+      case 'completed':
+        return 'Completed';
+      default:
+        return 'Pending';
+    }
+  };
+
   const assignedUsers = getUsersByIds(formData.assigneeIds);
 
   if (!isOpen) return null;
@@ -78,7 +104,7 @@ const TaskBoardAddTask = ({ isOpen, onClose }) => {
           <form onSubmit={handleSubmit}>
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Add New Task</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Add New Task{preSelectedStatus ? ` to ${getStatusLabel(preSelectedStatus)}` : ''}</h3>
               <button
                 type="button"
                 onClick={onClose}
@@ -129,6 +155,21 @@ const TaskBoardAddTask = ({ isOpen, onClose }) => {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
+                {/* Status */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                  <select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                  {preSelectedStatus && <p className="text-xs text-gray-500 mt-1">Pre-selected from {getStatusLabel(preSelectedStatus)} column</p>}
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
                   <select
@@ -141,17 +182,17 @@ const TaskBoardAddTask = ({ isOpen, onClose }) => {
                     <option value="high">High</option>
                   </select>
                 </div>
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Due Date</label>
-                  <input
-                    type="date"
-                    name="dueDate"
-                    value={formData.dueDate}
-                    onChange={handleChange}
-                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  />
-                </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Due Date</label>
+                <input
+                  type="date"
+                  name="dueDate"
+                  value={formData.dueDate}
+                  onChange={handleChange}
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                />
               </div>
 
               {/* Assignees */}
